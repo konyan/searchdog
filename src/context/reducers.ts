@@ -21,6 +21,7 @@ type PostPayload = {
 	};
 	[Types.RENDER]: {};
 	[Types.FETCH]: {};
+	[Types.RERENDER]: {};
 };
 
 export type PostActions = ActionMap<PostPayload>[keyof ActionMap<PostPayload>];
@@ -48,6 +49,14 @@ export const postReducer = (state: InitialStateType, action: PostActions) => {
 			const value = action.payload.keyword;
 
 			return { ...state, searchKeyword: value };
+
+		case Types.RERENDER:
+			const rerenderPosts = state.posts.map((post: PostType) => {
+				const random = randomNumber();
+				return { ...post, randon: random };
+			});
+			console.log("UPDAT", rerenderPosts[0].randon);
+			return { searchKeyword: "", posts: rerenderPosts };
 
 		default:
 			return state;

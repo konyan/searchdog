@@ -8,7 +8,6 @@ export type PostType = {
 
 export type InitialStateType = {
 	posts: PostType[];
-	searchPosts: PostType[];
 	searchKeyword: string;
 };
 

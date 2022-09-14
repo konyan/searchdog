@@ -26,12 +26,12 @@ const HomeScreen = () => {
 			if (state.searchKeyword) {
 				const searchPosts = getSearchResults(state.posts);
 				SetShowPosts(searchPosts);
-			} else {
+			} else if (state.posts) {
 				const first100Posts = state.posts.slice(0, pageCount * postCount);
 				SetShowPosts(first100Posts);
 			}
 		}
-	}, [render, state.searchKeyword]);
+	}, [render, state]);
 
 	useEffect(() => {
 		getFetchPosts();

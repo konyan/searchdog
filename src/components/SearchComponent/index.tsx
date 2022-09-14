@@ -23,7 +23,10 @@ const SearchComponent = () => {
 	};
 
 	const onRenderPosts = () => {
-		console.log("HELL");
+		dispatch({
+			type: Types.RERENDER,
+			payload: {},
+		});
 	};
 
 	return (
