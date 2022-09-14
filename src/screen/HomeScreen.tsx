@@ -13,8 +13,6 @@ import PostsComponent from "../components/PostsComponent";
 import { AppContext } from "../context/context";
 import { PostType, Types } from "../context/model";
 
-const { width } = Dimensions.get("screen");
-
 const HomeScreen = () => {
 	const { state, dispatch } = useContext(AppContext);
 	const [render, setRender] = useState(false);
@@ -22,7 +20,7 @@ const HomeScreen = () => {
 
 	useEffect(() => {
 		if (render && state.posts) {
-			const first100Posts = state.posts.splice(0, 10);
+			const first100Posts = state.posts.slice(0, 100);
 			console.log("FIR", first100Posts);
 			SetShowPosts(first100Posts);
 		}
@@ -56,20 +54,17 @@ const HomeScreen = () => {
 	};
 
 	const fetchPost = () => {
-		console.log("HELLO");
-		const new100Posts = state.posts.splice(showPosts.length, 10);
+		const new100Posts = state.posts.slice(
+			showPosts.length,
+			showPosts.length + 100
+		);
 		SetShowPosts([...showPosts, ...new100Posts]);
 	};
 
 	console.log("REND", render);
 	return (
 		<SafeAreaView style={styles.container}>
-			<Image
-				source={require("../../assets/doggo_walk.gif")}
-				style={{ width, height: 240 }}
-			/>
 			<View style={{ padding: 8 }}>
-				<SearchComponent />
 				{render ? (
 					<PostsComponent posts={showPosts} fetchMoreData={fetchPost} />
 				) : (

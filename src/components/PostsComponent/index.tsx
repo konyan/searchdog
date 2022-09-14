@@ -1,6 +1,9 @@
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, Image, Dimensions } from "react-native";
 import React from "react";
 import { PostType } from "../../context/model";
+import SearchComponent from "../SearchComponent";
+
+const { width } = Dimensions.get("screen");
 
 type PostsComponentProps = {
 	posts: PostType[];
@@ -8,6 +11,17 @@ type PostsComponentProps = {
 };
 
 const PostsComponent = ({ posts, fetchMoreData }: PostsComponentProps) => {
+	const renderHeader = () => {
+		return (
+			<View>
+				<Image
+					source={require("../../../assets/doggo_walk.gif")}
+					style={{ width, height: 240 }}
+				/>
+				<SearchComponent />
+			</View>
+		);
+	};
 	const renderFooter = () => {
 		return (
 			<Text
@@ -19,7 +33,13 @@ const PostsComponent = ({ posts, fetchMoreData }: PostsComponentProps) => {
 	};
 	const renderItem = ({ item: post }) => {
 		return (
-			<View>
+			<View
+				style={{
+					borderBottomWidth: 1,
+					borderBottomColor: "#bababa",
+					paddingVertical: 4,
+				}}
+			>
 				<Text>
 					{post.id}:{post.body}
 					<Text style={{ fontWeight: "bold", flex: 1 }}>{post.randon}</Text>
@@ -29,12 +49,13 @@ const PostsComponent = ({ posts, fetchMoreData }: PostsComponentProps) => {
 	};
 	return (
 		<FlatList
-			contentContainerStyle={{ flexGrow: 1 }}
+			showsVerticalScrollIndicator={false}
 			data={posts}
 			renderItem={renderItem}
 			keyExtractor={(post, index) => index?.toString()}
-			onEndReachedThreshold={0.4}
+			onEndReachedThreshold={0.2}
 			onEndReached={fetchMoreData}
+			ListHeaderComponent={renderHeader}
 			ListFooterComponent={renderFooter}
 		/>
 	);
