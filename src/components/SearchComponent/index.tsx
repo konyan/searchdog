@@ -6,19 +6,26 @@ import {
 	Button,
 	TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
+import { AppContext } from "../../context/context";
+import { Types } from "../../context/model";
 
-interface SearchComponentProps {
-	searchValue: string;
-	onChangeListener: () => void;
-	onRenderPosts: () => void;
-}
+const SearchComponent = () => {
+	const { state, dispatch } = useContext(AppContext);
 
-const SearchComponent = ({
-	searchValue,
-	onChangeListener,
-	onRenderPosts,
-}: SearchComponentProps) => {
+	const onChangeListener = (value) => {
+		dispatch({
+			type: Types.SEARCH,
+			payload: {
+				keyword: value,
+			},
+		});
+	};
+
+	const onRenderPosts = () => {
+		console.log("HELL");
+	};
+
 	return (
 		<View
 			style={{
@@ -29,15 +36,15 @@ const SearchComponent = ({
 		>
 			<TextInput
 				placeholder="enter search keyword"
-				value={searchValue}
-				onChange={onChangeListener}
+				value={state.searchKeyword}
+				onChangeText={onChangeListener}
 				autoFocus
 				style={{
 					width: "100%",
 					borderColor: "#eaeaea",
 					borderWidth: 2,
 					padding: 8,
-					marginBottom: 8,
+					marginVertical: 8,
 				}}
 			/>
 			<TouchableOpacity

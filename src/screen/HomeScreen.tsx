@@ -13,18 +13,25 @@ import PostsComponent from "../components/PostsComponent";
 import { AppContext } from "../context/context";
 import { PostType, Types } from "../context/model";
 
+const postCount = 10;
+
 const HomeScreen = () => {
 	const { state, dispatch } = useContext(AppContext);
 	const [render, setRender] = useState(false);
-	const [showPosts, SetShowPosts] = useState<PostType[]>();
+	const [showPosts, SetShowPosts] = useState<PostType[]>([]);
+	const [pageCount, setPageCount] = useState(1);
 
 	useEffect(() => {
-		if (render && state.posts) {
-			const first100Posts = state.posts.slice(0, 100);
-			console.log("FIR", first100Posts);
-			SetShowPosts(first100Posts);
+		if (render) {
+			if (state.searchKeyword) {
+				const searchPosts = getSearchResults(state.posts);
+				SetShowPosts(searchPosts);
+			} else {
+				const first100Posts = state.posts.slice(0, pageCount * postCount);
+				SetShowPosts(first100Posts);
+			}
 		}
-	}, [render]);
+	}, [render, state.searchKeyword]);
 
 	useEffect(() => {
 		getFetchPosts();
@@ -55,13 +62,23 @@ const HomeScreen = () => {
 
 	const fetchPost = () => {
 		const new100Posts = state.posts.slice(
-			showPosts.length,
-			showPosts.length + 100
+			pageCount * postCount,
+			(pageCount + 1) * postCount
 		);
 		SetShowPosts([...showPosts, ...new100Posts]);
+		setPageCount(pageCount + 1);
 	};
 
-	console.log("REND", render);
+	const getSearchResults = (posts: PostType[]) => {
+		return posts.filter(
+			(post) =>
+				post.randon.toString().includes(state.searchKeyword) ||
+				post.body
+					.toLowerCase()
+					.includes(state.searchKeyword.toLocaleLowerCase())
+		);
+	};
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={{ padding: 8 }}>

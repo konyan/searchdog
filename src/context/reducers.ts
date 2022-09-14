@@ -39,9 +39,15 @@ export const postReducer = (state: InitialStateType, action: PostActions) => {
 
 		case Types.RENDER:
 			const randonPosts = state.posts.map((post: PostType) => {
-				return { ...post, randon: randomNumber };
+				const random = randomNumber();
+				return { ...post, randon: random };
 			});
 			return { ...state, posts: randonPosts };
+
+		case Types.SEARCH:
+			const value = action.payload.keyword;
+
+			return { ...state, searchKeyword: value };
 
 		default:
 			return state;
