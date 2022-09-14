@@ -55,7 +55,6 @@ export const postReducer = (state: InitialStateType, action: PostActions) => {
 				const random = randomNumber();
 				return { ...post, randon: random };
 			});
-			console.log("UPDAT", rerenderPosts[0].randon);
 			return { searchKeyword: "", posts: rerenderPosts };
 
 		default:

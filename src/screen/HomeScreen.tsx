@@ -13,7 +13,7 @@ import PostsComponent from "../components/PostsComponent";
 import { AppContext } from "../context/context";
 import { PostType, Types } from "../context/model";
 
-const postCount = 10;
+const postCount = 100;
 
 const HomeScreen = () => {
 	const { state, dispatch } = useContext(AppContext);
